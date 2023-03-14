@@ -18,7 +18,7 @@
     "src": "./src"
   },
   "author": "Greg Tatum",
-  "license": "MIT",
+  "license": "GPLv3",
   "browserslist": [
     "since 2019-01"
   ],
