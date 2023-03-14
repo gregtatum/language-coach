@@ -1,3 +1,3 @@
-export function example() {
-  return { type: 'example' as const };
+export function setOpenAIApiKey(key: string) {
+  return { type: 'set-openai-api-key' as const, key };
 }

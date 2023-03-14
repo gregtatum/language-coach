@@ -5,7 +5,7 @@ import * as Plain from 'src/store/plain';
 /**
  * Re-exports.
  */
-export { type AppState, type State } from 'src/store/reducers';
+export { type State } from 'src/store/reducers';
 
 /**
  * Selectors always take the root state, and return some part of it.

@@ -5,16 +5,18 @@ import { createStore } from 'src/store/create-store';
 import * as T from 'src/@types';
 import { App } from 'src/components/App';
 import { mockGoogleAnalytics } from 'src/utils';
+import { createRoot } from 'react-dom/client';
 
 export * as A from 'src/store/actions';
 export * as $ from 'src/store/selectors';
 export * as T from 'src/@types';
+export * as Hooks from 'src/hooks';
 
 if (process.env.NODE_ENV !== 'test') {
   init();
 }
 
-export async function init(): Promise<void> {
+export function init() {
   mockGoogleAnalytics();
 
   const store = createStore();
@@ -40,5 +42,6 @@ function mountReact(store: T.Store): void {
     );
   }
   body.appendChild(mountElement);
-  ReactDOM.render(createRootApp(store), mountElement);
+  const root = createRoot(mountElement);
+  root.render(createRootApp(store));
 }

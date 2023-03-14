@@ -1,4 +1,9 @@
-body {
+:root {
+  --font-size-normal: 16px;
+  --font-size-small: 13px;
+}
+
+body, .AppRoot {
   position: absolute;
   height: 100%;
   width: 100%;
@@ -8,4 +13,51 @@ body {
   align-items: center;
   flex-direction: column;
   font-family: sans-serif;
+}
+
+.AppRoot {
+  overflow-y: auto;
+}
+
+.button {
+  margin: 0;
+  padding: 0.2em 0.5em;
+  display: inline-block;
+  border: 1px solid #888;
+  color: #000;
+  background-color: #eee;
+  border-radius: 4px;
+  font-size: var(--font-size-small);
+  cursor: pointer;
+  opacity: 0.9;
+  text-decoration: none;
+  line-height: 1.2;
+  font-family: sans-serif;
+}
+
+.button:active {
+  outline: 2px solid #0040ff;
+}
+
+.button:focus {
+  outline: 2px solid #0040ffaa;
+}
+
+.button:hover {
+  opacity: 1;
+}
+
+.button:disabled {
+  opacity: 0.6;
+}
+
+.button-primary {
+  border-color: #004eca;
+  background-color: #004eca;
+  color: #fff;
+}
+
+.button-primary:active,
+.button-primary:focus {
+  border-color: #fff;
 }

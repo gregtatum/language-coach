@@ -18,9 +18,9 @@ const PlainInternal = {
 export type PlainInternal = typeof PlainInternal;
 
 export function exampleThunk(): Thunk {
-  return async (dispatch, getState) => {
+  return (dispatch, getState) => {
     console.log(getState());
     dispatch(PlainInternal.example());
-    dispatch(Plain.example());
+    dispatch(Plain.setOpenAIApiKey('example'));
   };
 }

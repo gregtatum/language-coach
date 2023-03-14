@@ -1,0 +1,19 @@
+.apiKeyRow {
+  display: flex;
+  gap: 10px;
+}
+
+.apiKeyRowInput {
+  flex: 1;
+  padding: 10px;
+}
+
+.apiKeyRowInput {
+  padding: 10px;
+  font-size: var(--font-size-normal);
+}
+
+.apiKeyRowButton {
+  padding: 10px;
+  font-size: var(--font-size-normal);
+}

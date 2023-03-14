@@ -36,10 +36,7 @@ export function createStore(): Store {
   if (process.env.NODE_ENV === 'development') {
     middlewares.push(logger as any);
   }
-  const store = reduxCreateStore(
-    combineReducers(reducers),
-    applyMiddleware(...middlewares),
-  );
+  const store = reduxCreateStore(reducers, applyMiddleware(...middlewares));
 
   return store as any;
 }
