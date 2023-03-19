@@ -1,0 +1,88 @@
+.translationList {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px;
+  flex: 1;
+  width: 100%;
+  box-sizing: border-box;
+  min-height: calc(100vh - var(--header-height));
+}
+
+.translationListHeading {
+  margin-top: 0;
+}
+
+.translationListForm {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.translationListLabel {
+  flex: 1;
+  margin-right: 16px;
+}
+
+.translationListInput {
+  flex: 2;
+  margin-right: 16px;
+  padding: 8px;
+  border: none;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.translationListButton {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  background-color: #0077cc;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.translationListButton:hover {
+  background-color: #0066aa;
+}
+
+.translationListList {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.translationListListItem {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px;
+  margin-bottom: 8px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: #f5f5f5;
+  width: 100%;
+}
+
+.translationListListItem:last-child {
+  margin-bottom: 0;
+}
+
+.translationListDeleteButton {
+  padding: 8px;
+  border: none;
+  background-color: #d9534f;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.translationListDeleteButton:hover {
+  background-color: #c9302c;
+}

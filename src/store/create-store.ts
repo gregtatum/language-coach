@@ -1,6 +1,5 @@
 import {
   createStore as reduxCreateStore,
-  combineReducers,
   applyMiddleware,
   type Middleware,
 } from 'redux';

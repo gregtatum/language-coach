@@ -69,3 +69,20 @@ export type Store = {
   subscribe(listener: () => void): unknown;
   replaceReducer(nextReducer: Reducer<State>): void;
 };
+
+export type View = 'home' | 'translation-list' | 'translation';
+
+export interface SourceSentence {
+  text: string;
+  startIndex: number;
+  endIndex: number;
+}
+
+export interface Translation {
+  sourceLanguage: string;
+  targetLanguage: string;
+  summary: string;
+  sourceText: string;
+  sourceSentences: Array<SourceSentence>;
+  targetSentences: string[];
+}

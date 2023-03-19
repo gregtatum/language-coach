@@ -1,0 +1,57 @@
+.header {
+  width: 100%;
+  height: var(--header-height);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  box-sizing: border-box;
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 0 50px rgba(var(--accent-color-rgb), 0.2);
+  gap: 10px;
+  padding: 0 8px;
+}
+
+.headerLogo {
+  width: 36px;
+  height: 36px;
+}
+
+.headerLinks {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-self: stretch;
+}
+
+.headerLogoName {
+  font-weight: bolder;
+  font-size: 1em;
+  line-height: 1;
+  text-transform: lowercase;
+}
+
+a.headerLink {
+  text-decoration: none;
+  color: #555;
+  padding: 0 20px;
+  position: relative;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+a.headerLink.active {
+  color: var(--accent-color);
+  line-height: 14px;
+}
+
+a.headerLink.active::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background-color: var(--accent-color);
+}

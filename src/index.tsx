@@ -11,6 +11,7 @@ export * as A from 'src/store/actions';
 export * as $ from 'src/store/selectors';
 export * as T from 'src/@types';
 export * as Hooks from 'src/hooks';
+export * as Utils from 'src/utils';
 
 if (process.env.NODE_ENV !== 'test') {
   init();

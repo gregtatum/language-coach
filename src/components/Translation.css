@@ -1,17 +1,25 @@
-.translationSuggestionsLanguages {
+.translation {
+  padding: 10px;
+  border: 1px solid #aaa;
+  border-radius: 3px;
+  box-sizing: border-box;
+  min-height: calc(100vh - var(--header-height));
+}
+
+.translationLanguages {
   display: flex;
   gap: 10px;
   align-content: center;
   line-height: 22px;
 }
 
-.translationSuggestionsLanguages > span {
+.translationLanguages > span {
   padding: 6px 0;
   flex: 1;
   text-align: center;
 }
 
-.translationSuggestionsLanguages > input {
+.translationLanguages > input {
   padding: 6px;
   border-radius: 3px;
   border: 1px solid #aaa;
@@ -20,12 +28,12 @@
   padding-top: 10px;
 }
 
-.translationSuggestionsTextAreas {
+.translationTextAreas {
   display: flex;
   gap: 10px;
 }
 
-.translationSuggestionsTextAreas textarea {
+.translationTextAreas textarea {
   border: 1px solid #aaa;
   border-radius: 3px;
   width: calc(50vw - 35px);
@@ -36,23 +44,17 @@
   box-sizing: border-box;
 }
 
-.translationSuggestions {
-  padding: 10px;
-  border: 1px solid #aaa;
-  border-radius: 3px;
-}
-
-.translationSuggestionsResponseButton {
+.translationResponseButton {
   padding: 10px;
   font-size: var(--font-size-normal);
   margin: 10px 0;
 }
 
-.translationSuggestionsResponseButtonWrapper {
+.translationResponseButtonWrapper {
   text-align: right;
 }
 
-.translationSuggestionsResponse {
+.translationResponse {
   max-width: calc(100vw - 60px);
   background-color: #eee;
   padding: 25px;

@@ -1,0 +1,39 @@
+.homepage {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100vh;
+  overflow-y: auto;
+  margin: 1em;
+  max-width: 600px;
+}
+
+.homepageHeader {
+  font-size: 2em;
+  margin-bottom: 1em;
+  color: #000;
+}
+
+.homepageParagraph {
+  font-size: 1.1em;
+  line-height: 1.5;
+  margin-bottom: 2em;
+  color: #555;
+}
+
+a.homepageButton {
+  text-decoration: none;
+  padding: 0.7em 1.7em;
+  font-size: 1.2em;
+  border-radius: 3em;
+  border: none;
+  background-color: #6a72fb;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.1s;
+  box-shadow: 0 0.3em 0.6em #0003;
+}
+
+.homepageButton:hover {
+  background-color: #545cfb;
+}
