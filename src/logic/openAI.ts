@@ -5,7 +5,7 @@ interface UsageTokens {
 }
 
 interface ChatFormat {
-  role: 'system' | 'user' | 'assistant';
+  role: 'system' | 'user' | 'coach';
   content: string;
 }
 
@@ -208,7 +208,7 @@ export class OpenAI {
           ),
         },
         {
-          role: 'assistant',
+          role: 'coach',
           content: [
             `1. "Esta" is a feminine pronoun which is incorrect for "perro" (a masculine noun). It should be "Este" instead.`,
             `2. "Bonito" is not incorrect, but a more common and appropriate word for "cute" in Spanish is "lindo".`,
@@ -221,7 +221,7 @@ export class OpenAI {
           content: getUserPrompt('This dog is cute.', 'Este perro es lindo.'),
         },
         {
-          role: 'assistant',
+          role: 'coach',
           content: ['The translation appears good to me!'].join(''),
         },
         {
