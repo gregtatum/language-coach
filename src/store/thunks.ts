@@ -31,7 +31,7 @@ export function exampleThunk(): Thunk {
 
 export function addTranslation(
   summary: string,
-  navigate: (path: string) => void,
+  navigate?: (path: string) => void,
 ): Thunk<{ slug: string; translation: T.Translation }> {
   return (dispatch, getState) => {
     const { sourceLanguage, targetLanguage } = $.guessTranslationLanguages(
@@ -50,7 +50,9 @@ export function addTranslation(
     };
 
     dispatch(PlainInternal.addTranslation(translation, slug));
-    navigate('/translation/' + slug);
+    if (navigate) {
+      navigate('/translation/' + slug);
+    }
     return { slug, translation };
   };
 }

@@ -34,6 +34,12 @@ export const getCurrentTranslation = dangerousSelector(
   'No translation was found.',
 );
 
+export const getHasLanguagesForTranslation = createSelector(
+  getCurrentTranslation,
+  (translation) =>
+    Boolean(translation.sourceLanguage && translation.targetLanguage),
+);
+
 export const getOpenAiOrNull = createSelector(
   getOpenAiApiKey,
   (key): OpenAI | null => {

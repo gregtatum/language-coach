@@ -1,0 +1,66 @@
+.oldTranslation {
+  padding: 10px;
+  border: 1px solid #aaa;
+  border-radius: 3px;
+  box-sizing: border-box;
+  min-height: calc(100vh - var(--header-height));
+}
+
+.oldTranslationLanguages {
+  display: flex;
+  gap: 10px;
+  align-content: center;
+  line-height: 22px;
+}
+
+.oldTranslationLanguages > span {
+  padding: 6px 0;
+  flex: 1;
+  text-align: center;
+}
+
+.oldTranslationLanguages > input {
+  padding: 6px;
+  border-radius: 3px;
+  border: 1px solid #aaa;
+  width: 150px;
+  text-align: center;
+  padding-top: 10px;
+}
+
+.oldTranslationTextAreas {
+  display: flex;
+  gap: 10px;
+}
+
+.oldTranslationTextAreas textarea {
+  border: 1px solid #aaa;
+  border-radius: 3px;
+  width: calc(50vw - 35px);
+  margin-top: 10px;
+  height: 300px;
+  max-width: 500px;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.oldTranslationResponseButton {
+  padding: 10px;
+  font-size: var(--font-size-normal);
+  margin: 10px 0;
+}
+
+.oldTranslationResponseButtonWrapper {
+  text-align: right;
+}
+
+.oldTranslationResponse {
+  max-width: calc(100vw - 60px);
+  background-color: #eee;
+  padding: 25px;
+  box-sizing: border-box;
+  border-radius: 3px;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  max-width: 1010px;
+}

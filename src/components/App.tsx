@@ -15,7 +15,6 @@ import { UnhandledCaseError } from 'src/utils';
 function ViewRouter(props: { view: T.View }) {
   const { view } = props;
   const dispatch = Hooks.useDispatch();
-  console.log(`!!! ViewRouter`);
   React.useEffect(() => {
     dispatch(A.setView(view));
   }, [view]);
@@ -24,7 +23,6 @@ function ViewRouter(props: { view: T.View }) {
 
 function TranslationRouter() {
   const params = Router.useParams();
-  console.log(`!!! TranslationRouter`, params);
   const slug = params['*'];
   const dispatch = Hooks.useDispatch();
   React.useEffect(() => {
@@ -38,6 +36,10 @@ function TranslationRouter() {
 }
 
 export function App() {
+  React.useEffect(() => {
+    document.body.classList.add('AppLoaded');
+  }, []);
+
   return (
     <ApiKey>
       {/* The router is used to only route the views to the Redux store. */}

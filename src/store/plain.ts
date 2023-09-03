@@ -17,11 +17,11 @@ export function removeTranslation(slug: string) {
 }
 
 /**
- * Re-sets the translation by updating the entire source.
+ * Sets the translation by updating the entire source.
  */
-export function updateTranslationSource(slug: string, sourceText: string) {
+export function addTranslationSource(slug: string, sourceText: string) {
   return {
-    type: 'update-translation-source' as const,
+    type: 'add-translation-source' as const,
     slug,
     sourceText,
     sourceSentences: Utils.getSourceSentences(sourceText),

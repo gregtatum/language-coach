@@ -10,7 +10,7 @@ export function TranslationList() {
   const navigate = Router.useNavigate();
 
   return (
-    <div className="translationList">
+    <div className="translationList AppScroll">
       <h1 className="translationListHeading">Your Translations</h1>
       <p>
         Translate text and improve your language skills with a machine learning
@@ -27,10 +27,22 @@ export function TranslationList() {
         {translations.map(
           ([slug, { summary, sourceLanguage, targetLanguage }]) => (
             <div className="translationListItem" key={slug}>
-              <Router.Link to={`/translation/${slug}`}>{summary}</Router.Link>
-              <div className="translationListLang">{sourceLanguage}</div>
-              <div className="translationListLang">{targetLanguage}</div>
-              <button type="button" className="button warning">
+              <Router.Link
+                className="translationListLink"
+                to={`/translation/${slug}`}
+              >
+                {summary}
+              </Router.Link>
+              <div className="translationListLang">
+                {sourceLanguage || 'Not Set'}
+              </div>
+              <div className="translationListLang">
+                {targetLanguage || 'Not Set'}
+              </div>
+              <button
+                type="button"
+                className="button warning translationListButton"
+              >
                 Delete
               </button>
             </div>

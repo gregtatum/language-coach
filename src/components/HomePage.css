@@ -1,9 +1,8 @@
+
 .homepage {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  height: 100vh;
-  overflow-y: auto;
   margin: 1em;
   max-width: 600px;
 }

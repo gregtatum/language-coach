@@ -1,5 +1,4 @@
 import * as T from 'src/@types';
-import * as Utils from 'src/utils';
 import { combineReducers } from 'redux';
 
 function init(state = false, action: T.Action): boolean {
@@ -57,17 +56,15 @@ function translations(
       };
       return result;
     }
-    case 'update-translation-source': {
+    case 'add-translation-source': {
       const { slug, sourceText, sourceSentences } = action;
       const oldTranslation = state[slug];
       if (!oldTranslation) {
         throw new Error(`Could not find the translation from slug ${slug}.`);
       }
       const translation: T.Translation = {
+        ...oldTranslation,
         sourceText,
-        sourceLanguage: '',
-        targetLanguage: '',
-        summary: 'New Translation',
         sourceSentences,
         targetSentences: sourceSentences.map(() => ''),
       };

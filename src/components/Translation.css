@@ -1,25 +1,24 @@
 .translation {
-  padding: 10px;
-  border: 1px solid #aaa;
-  border-radius: 3px;
-  box-sizing: border-box;
-  min-height: calc(100vh - var(--header-height));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.translationLanguages {
+.translationLanguageInputs {
+  font-size: var(--font-size-normal);
   display: flex;
   gap: 10px;
   align-content: center;
   line-height: 22px;
 }
 
-.translationLanguages > span {
+.translationLanguageInputs span {
   padding: 6px 0;
   flex: 1;
   text-align: center;
 }
 
-.translationLanguages > input {
+.translationLanguageInputs input {
   padding: 6px;
   border-radius: 3px;
   border: 1px solid #aaa;
@@ -28,39 +27,63 @@
   padding-top: 10px;
 }
 
-.translationTextAreas {
+.translationHeader {
+  transition: height 250ms;
+  height: 1.2em;
+}
+
+.translationHeader.hidden {
+  visibility: hidden;
+  height: 0;
+}
+
+.translationInputText {
   display: flex;
-  gap: 10px;
+  flex-direction: column;
+  animation: fadein 250ms;
+  width: 500px;
 }
 
-.translationTextAreas textarea {
+.translationInputTextArea {
+  margin-bottom: 12px;
+  width: 100% !important;
+  box-sizing: border-box;
+  min-height: 300px;
+  padding: 20px;
+}
+
+.translationSplit {
+  width: 100%;
+  max-width: 1000px;
+  margin: 20px;
+}
+
+.translationPair {
+  display: flex;
+  justify-content: center;
+  margin: 30px 0;
   border: 1px solid #aaa;
-  border-radius: 3px;
-  width: calc(50vw - 35px);
-  margin-top: 10px;
-  height: 300px;
-  max-width: 500px;
-  padding: 10px;
+  border-radius: 7px;
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px 0px;
+}
+
+.translationPair > * {
+  flex: 1;
+}
+
+.translationPairTarget {
+  padding: 20px;
+  font-family: var(--font-family-system-ui);
+  line-height: 1.6;
   box-sizing: border-box;
-}
-
-.translationResponseButton {
-  padding: 10px;
-  font-size: var(--font-size-normal);
-  margin: 10px 0;
-}
-
-.translationResponseButtonWrapper {
-  text-align: right;
-}
-
-.translationResponse {
-  max-width: calc(100vw - 60px);
   background-color: #eee;
-  padding: 25px;
-  box-sizing: border-box;
-  border-radius: 3px;
-  line-height: 1.7;
-  white-space: pre-wrap;
-  max-width: 1010px;
+  border: 0;
+  border-radius: 0 7px 7px 0;
+}
+
+.translationPairSource {
+  margin: 0;
+  padding: 20px;
+  line-height: 1.6;
+  border-right: 1px solid #aaa;
 }
