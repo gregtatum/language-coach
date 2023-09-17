@@ -56,3 +56,38 @@ export function useDispatch(): T.Dispatch {
 }
 
 export { useSelector } from 'react-redux';
+
+export function useListener<
+  E extends Element,
+  Handler extends E['addEventListener'],
+  Type extends Parameters<Handler>[0],
+  Listener extends Parameters<Handler>[1],
+  Options extends Parameters<Handler>[2],
+>(
+  elementOrRef: E | React.RefObject<E> | null,
+  type: Type | Type[],
+  deps: any[],
+  callback: Listener,
+  options?: Options,
+) {
+  const types: Type[] = Array.isArray(type) ? type : [type];
+  React.useEffect(() => {
+    if (!elementOrRef) {
+      return () => {};
+    }
+    const element =
+      'current' in elementOrRef ? elementOrRef.current : elementOrRef;
+    if (!element) {
+      return () => {};
+    }
+    for (const type of types) {
+      element.addEventListener(type, callback, options);
+    }
+
+    return () => {
+      for (const type of types) {
+        element.removeEventListener(type, callback, options);
+      }
+    };
+  }, [elementOrRef, ...deps]);
+}

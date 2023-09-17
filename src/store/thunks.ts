@@ -56,3 +56,36 @@ export function addTranslation(
     return { slug, translation };
   };
 }
+
+export function selectNextStem(direction: -1 | 1): Thunk<number> {
+  return (dispatch, getState) => {
+    const stems = $.getUnknownStems(getState());
+    if (!stems) {
+      throw new Error('Expected stems when selecting a new stem');
+    }
+    let stemIndex = $.getSelectedStemIndex(getState()) ?? -1;
+    stemIndex += direction;
+    // Keep the index in bounds.
+    stemIndex = Math.max(0, Math.min(stemIndex, stems.length - 1));
+    dispatch(Plain.selectStem(stemIndex));
+    return stemIndex;
+  };
+}
+
+export function ignoreSelectedStem(): Thunk {
+  return (dispatch, getState) => {
+    const stem = $.getSelectedStem(getState());
+    if (stem) {
+      dispatch(Plain.ignoreStem(stem.stem));
+    }
+  };
+}
+
+export function learnSelectedStem(): Thunk {
+  return (dispatch, getState) => {
+    const stem = $.getSelectedStem(getState());
+    if (stem) {
+      dispatch(Plain.learnStem(stem.stem));
+    }
+  };
+}

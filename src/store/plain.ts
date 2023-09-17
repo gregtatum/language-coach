@@ -1,4 +1,5 @@
 import { T, Utils } from 'src';
+import { Stem } from 'src/@types';
 
 export function setOpenAIApiKey(key: string) {
   return { type: 'set-openai-api-key' as const, key };
@@ -54,5 +55,40 @@ export function updateTranslationTarget(
     slug,
     translationIndex,
     targetText,
+  };
+}
+
+export function stemFrequencyAnalysis(stems: Stem[]) {
+  return {
+    type: 'stem-frequency-analysis' as const,
+    stems,
+  };
+}
+
+export function selectStem(stemIndex: number) {
+  return {
+    type: 'select-stem' as const,
+    stemIndex,
+  };
+}
+
+export function learnStem(stem: string) {
+  return {
+    type: 'learn-stem' as const,
+    stem,
+  };
+}
+
+export function ignoreStem(stem: string) {
+  return {
+    type: 'ignore-stem' as const,
+    stem,
+  };
+}
+
+export function changeLanguage(code: string) {
+  return {
+    type: 'change-language' as const,
+    code,
   };
 }

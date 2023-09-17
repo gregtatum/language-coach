@@ -1,5 +1,7 @@
 import * as T from 'src/@types';
 import { combineReducers } from 'redux';
+import { Stem } from 'src/@types';
+import { getLanguageByCode } from 'src/logic/languages';
 
 function init(state = false, action: T.Action): boolean {
   switch (action.type) {
@@ -117,12 +119,83 @@ function translations(
   }
 }
 
+function stems(state: Stem[] | null = null, action: T.Action): Stem[] | null {
+  switch (action.type) {
+    case 'stem-frequency-analysis':
+      return action.stems;
+    default:
+      return state;
+  }
+}
+
+function selectedStem(
+  state: null | number = 3,
+  action: T.Action,
+): null | number {
+  switch (action.type) {
+    case 'select-stem':
+      return action.stemIndex;
+    case 'stem-frequency-analysis':
+      return null;
+    default:
+      return state;
+  }
+}
+
+function ignoredStems(
+  state: Set<string> = new Set(),
+  action: T.Action,
+): Set<string> {
+  switch (action.type) {
+    case 'ignore-stem': {
+      const stems = new Set(state);
+      stems.add(action.stem);
+      return stems;
+    }
+    default:
+      return state;
+  }
+}
+
+function learnedStems(
+  state: Set<string> = new Set(),
+  action: T.Action,
+): Set<string> {
+  switch (action.type) {
+    case 'learn-stem': {
+      const stems = new Set(state);
+      stems.add(action.stem);
+      return stems;
+    }
+    default:
+      return state;
+  }
+}
+
+function language(
+  state: T.Language = getLanguageByCode('es'),
+  action: T.Action,
+) {
+  switch (action.type) {
+    case 'change-language': {
+      return getLanguageByCode(action.code);
+    }
+    default:
+      return state;
+  }
+}
+
 export const reducers = combineReducers({
   init,
   openAiApiKey,
   view,
   translationSlug,
   translations,
+  selectedStem,
+  stems,
+  ignoredStems,
+  learnedStems,
+  language,
 });
 
 export type State = ReturnType<typeof reducers>;

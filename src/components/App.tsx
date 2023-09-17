@@ -5,6 +5,7 @@ import './App.css';
 import { ApiKey } from './ApiKey';
 import { Translation } from './Translation';
 import { TranslationList } from './TranslationList';
+import { Frequency } from './Frequency';
 import { HomePage } from './HomePage';
 import { Header } from './Header';
 
@@ -35,6 +36,17 @@ function TranslationRouter() {
   return null;
 }
 
+function FrequencyRouter() {
+  const params = Router.useParams();
+  const slug = params['*'];
+  const dispatch = Hooks.useDispatch();
+  React.useEffect(() => {
+    dispatch(A.setView('frequency'));
+    // TODO - Handle slug.
+  }, [slug]);
+  return null;
+}
+
 export function App() {
   React.useEffect(() => {
     document.body.classList.add('AppLoaded');
@@ -47,6 +59,9 @@ export function App() {
         <Router.Routes>
           <Router.Route path="/" element={<ViewRouter view="home" />} />
           <Router.Route path="translation" element={<TranslationRouter />}>
+            <Router.Route path="*" />
+          </Router.Route>
+          <Router.Route path="frequency" element={<FrequencyRouter />}>
             <Router.Route path="*" />
           </Router.Route>
         </Router.Routes>
@@ -66,6 +81,8 @@ function Views() {
       return <TranslationList />;
     case 'translation':
       return <Translation />;
+    case 'frequency':
+      return <Frequency />;
     default:
       throw new UnhandledCaseError(view, 'Unhandled view');
   }

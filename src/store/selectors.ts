@@ -20,11 +20,62 @@ export function getTranslations(state: State) {
   return state.translations;
 }
 
+export function getStems(state: State) {
+  return state.stems;
+}
+
+export function getSelectedStemIndex(state: State) {
+  return state.selectedStem;
+}
+
+export function getIgnoredStems(state: State) {
+  return state.ignoredStems;
+}
+
+export function getLearnedStems(state: State) {
+  return state.learnedStems;
+}
+
+export function getSelectedStem(state: State) {
+  const stemIndex = getSelectedStemIndex(state);
+  const stems = getUnknownStems(state);
+  if (stemIndex !== null && stems) {
+    return stems[stemIndex];
+  }
+  return null;
+}
+
+export const getLearnedAndIgnoredStems = createSelector(
+  getLearnedStems,
+  getIgnoredStems,
+  (learned, ignored) => {
+    const combined = new Set(learned);
+    for (const word of ignored) {
+      combined.add(word);
+    }
+    return combined;
+  },
+);
+
+export const getUnknownStems = createSelector(
+  getStems,
+  getLearnedAndIgnoredStems,
+  (stems, ignored): T.Stem[] | null => {
+    if (!stems) {
+      return null;
+    }
+    const unknownStems = stems.filter((stem) => !ignored.has(stem.stem));
+    // Limit to 1000 words.
+    return unknownStems.length > 1000
+      ? unknownStems.slice(0, 1000)
+      : unknownStems;
+  },
+);
+
 export const getCurrentTranslationOrNull = createSelector(
   getTranslations,
   getTranslationSlug,
   (translations, slug): T.Translation | null => {
-    console.log(`!!! translations[slug]`, translations, slug);
     return translations[slug] ?? null;
   },
 );

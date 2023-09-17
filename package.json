@@ -90,6 +90,7 @@
     "workbox-webpack-plugin": "^6.5.4"
   },
   "dependencies": {
+    "hunspell-asm": "github:gregtatum/hunspell-asm#72494a846ea709815b0bebf037f59853912dd4a3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-redux": "^8.0.5",

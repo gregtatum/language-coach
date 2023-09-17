@@ -1,0 +1,87 @@
+.frequencyTop {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 700px;
+  padding: 0 10px;
+  margin: 0 auto;
+}
+
+.frequencyTextArea {
+  margin-bottom: 12px;
+  /* Only allow the textarea to grow vertically */
+  width: 100% !important;
+  box-sizing: border-box;
+  min-height: 300px;
+  padding: 20px;
+}
+
+.frequencyStems {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.frequencyStemsRow {
+  display: grid;
+  grid-template-columns: 70px 1fr 1fr 100px 2fr;
+  gap: 20px;
+  padding: 4px 0;
+}
+
+.frequencyStemsRow:hover {
+  background-color: #6a72fb14;
+}
+
+.frequencyStemsRow.selected {
+  outline: 1px solid var(--accent-color);
+  border-radius: 3px;
+}
+
+.frequencyStemsRow.selected {
+  outline: 1px solid var(--accent-color);
+  border-radius: 3px;
+  background-color: var(--accent-color);
+  color: #fff;
+}
+
+.frequencyStemsCount {
+  text-align: right;
+}
+
+.frequencyButtons {
+  display: flex;
+  align-items: start;
+  gap: 3px;
+}
+
+.frequencyButton {
+  padding: 0.1em 0.4em;
+  transition: none;
+}
+
+.frequencyStemsRow.selected .frequencyButton {
+  border: 2px solid #fff;
+  background-color: var(--accent-color);
+  color: #fff;
+}
+
+.frequencyStemsRow.selected .frequencyButton:hover {
+  background-color: #fff;
+  color: rgba(var(--accent-color-rgb), 0.9);
+}
+
+.frequencyStemsHeader {
+  background-color: #eee;
+  color: #888;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.frequencyStemsHeader > div {
+  padding: 5px 0;
+}
+
+.frequencyStemsHeaderRight {
+  text-align: right;
+}

@@ -35,6 +35,12 @@ export function Header() {
         >
           Translations
         </Router.Link>
+        <Router.Link
+          to="/frequency"
+          className={'headerLink' + getActiveClass('frequency')}
+        >
+          Word Frequency
+        </Router.Link>
       </div>
     </div>
   );
