@@ -7,7 +7,9 @@ export function ApiKey(props: { children: any }) {
   const key = Hooks.useSelector($.getOpenAiApiKey);
   const dispatch = Hooks.useDispatch();
   const inputRef = React.useRef<HTMLInputElement | null>(null);
-  if (key) {
+  // TODO - Replace me.
+  // eslint-disable-next-line no-constant-condition
+  if (key || true) {
     return props.children;
   }
   return (

@@ -94,4 +94,8 @@ export interface Stem {
   sentences: string[];
 }
 
-export type Language = { code: string; display: string };
+export type Language = {
+  code: string;
+  long: string;
+  short: string;
+};

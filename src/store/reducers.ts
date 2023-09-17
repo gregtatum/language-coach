@@ -142,14 +142,51 @@ function selectedStem(
   }
 }
 
+function getLearnedStemsFromLocalStorage(): Set<string> {
+  const language = localStorage.getItem('language');
+  if (!language) {
+    return new Set();
+  }
+  return getSetFromLocalStorage('learned-stems-' + language);
+}
+
+function getIgnoredStemsFromLocalStorage(): Set<string> {
+  const language = localStorage.getItem('language');
+  if (!language) {
+    return new Set();
+  }
+  return getSetFromLocalStorage('ignored-stems-' + language);
+}
+
+function getSetFromLocalStorage(key: string): Set<string> {
+  const value = localStorage.getItem(key);
+  if (!value) {
+    return new Set();
+  }
+  return new Set(JSON.parse(value));
+}
+
+function saveSetToLocalStorage(key: string, set: Set<string>) {
+  localStorage.setItem(key, JSON.stringify([...set]));
+}
+
 function ignoredStems(
-  state: Set<string> = new Set(),
+  state: Set<string> = getIgnoredStemsFromLocalStorage(),
   action: T.Action,
 ): Set<string> {
   switch (action.type) {
     case 'ignore-stem': {
+      const { stem, languageCode } = action;
       const stems = new Set(state);
-      stems.add(action.stem);
+      stems.add(stem);
+      saveSetToLocalStorage('ignored-stems-' + languageCode, stems);
+      return stems;
+    }
+    case 'undo-ignore-stem': {
+      const { stem, languageCode } = action;
+      const stems = new Set(state);
+      stems.delete(stem);
+      saveSetToLocalStorage('ignored-stems-' + languageCode, stems);
       return stems;
     }
     default:
@@ -158,13 +195,22 @@ function ignoredStems(
 }
 
 function learnedStems(
-  state: Set<string> = new Set(),
+  state: Set<string> = getLearnedStemsFromLocalStorage(),
   action: T.Action,
 ): Set<string> {
   switch (action.type) {
     case 'learn-stem': {
+      const { stem, languageCode } = action;
       const stems = new Set(state);
-      stems.add(action.stem);
+      stems.add(stem);
+      saveSetToLocalStorage('learned-stems-' + languageCode, stems);
+      return stems;
+    }
+    case 'undo-learn-stem': {
+      const { stem, languageCode } = action;
+      const stems = new Set(state);
+      stems.delete(stem);
+      saveSetToLocalStorage('learned-stems-' + languageCode, stems);
       return stems;
     }
     default:
@@ -173,12 +219,34 @@ function learnedStems(
 }
 
 function language(
-  state: T.Language = getLanguageByCode('es'),
+  state: T.Language = getLanguageByCode(
+    localStorage.getItem('language') ?? 'es',
+  ),
   action: T.Action,
 ) {
   switch (action.type) {
     case 'change-language': {
+      localStorage.setItem('language', action.code);
       return getLanguageByCode(action.code);
+    }
+    default:
+      return state;
+  }
+}
+
+function undoList(state: T.Action[] = [], action: T.Action): T.Action[] {
+  switch (action.type) {
+    case 'learn-stem':
+    case 'ignore-stem': {
+      return [...state, action];
+    }
+    case 'set-view':
+      return [];
+    case 'undo-learn-stem':
+    case 'undo-ignore-stem': {
+      const newState = state.slice();
+      newState.pop();
+      return newState;
     }
     default:
       return state;
@@ -195,6 +263,7 @@ export const reducers = combineReducers({
   stems,
   ignoredStems,
   learnedStems,
+  undoList,
   language,
 });
 

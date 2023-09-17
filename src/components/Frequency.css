@@ -7,6 +7,19 @@
   margin: 0 auto;
 }
 
+.frequencyTop p {
+  line-height: 1.4;
+  align-self: start;
+}
+
+.frequencyTop code {
+  font-size: 16px;
+  padding: 3px 6px;
+  border: 2px solid #aaa;
+  border-radius: 6px;
+  background: #eee;
+}
+
 .frequencyTextArea {
   margin-bottom: 12px;
   /* Only allow the textarea to grow vertically */
@@ -84,4 +97,8 @@
 
 .frequencyStemsHeaderRight {
   text-align: right;
+}
+
+p.frequencyCodes {
+  line-height: 2.2;
 }

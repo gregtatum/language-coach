@@ -17,6 +17,12 @@ const PlainInternal = {
   addTranslation(translation: T.Translation, slug: string) {
     return { type: 'add-translation' as const, translation, slug };
   },
+  undoLearnStem(stem: string, languageCode: string) {
+    return { type: 'undo-learn-stem' as const, stem, languageCode };
+  },
+  undoIgnoreStem(stem: string, languageCode: string) {
+    return { type: 'undo-ignore-stem' as const, stem, languageCode };
+  },
 };
 
 export type PlainInternal = typeof PlainInternal;
@@ -75,8 +81,9 @@ export function selectNextStem(direction: -1 | 1): Thunk<number> {
 export function ignoreSelectedStem(): Thunk {
   return (dispatch, getState) => {
     const stem = $.getSelectedStem(getState());
+    const languageCode = $.getLanguageCode(getState());
     if (stem) {
-      dispatch(Plain.ignoreStem(stem.stem));
+      dispatch(Plain.ignoreStem(stem.stem, languageCode));
     }
   };
 }
@@ -84,8 +91,32 @@ export function ignoreSelectedStem(): Thunk {
 export function learnSelectedStem(): Thunk {
   return (dispatch, getState) => {
     const stem = $.getSelectedStem(getState());
+    const languageCode = $.getLanguageCode(getState());
     if (stem) {
-      dispatch(Plain.learnStem(stem.stem));
+      dispatch(Plain.learnStem(stem.stem, languageCode));
+    }
+  };
+}
+
+export function applyUndo(): Thunk {
+  return (dispatch, getState) => {
+    const undoList = $.getUndoList(getState());
+    const action = undoList[undoList.length - 1];
+    if (!action) {
+      console.log(`!!! Nothing to undo`);
+      return;
+    }
+    switch (action.type) {
+      case 'learn-stem':
+        dispatch(PlainInternal.undoLearnStem(action.stem, action.languageCode));
+        break;
+      case 'ignore-stem':
+        dispatch(
+          PlainInternal.undoIgnoreStem(action.stem, action.languageCode),
+        );
+        break;
+      default:
+        throw new Error('Unknown undo action: ' + action.type);
     }
   };
 }

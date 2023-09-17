@@ -104,3 +104,23 @@ body {
 .button-primary:focus {
   border-color: #fff;
 }
+
+.inline-button {
+  font: inherit;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  color: var(--accent-color);
+  font-weight: bold;
+  background: none;
+  cursor: pointer;
+}
+
+.button:active,
+.button:focus {
+  outline: 2px solid rgba(var(--accent-color-rgb), 0.5);
+}
+
+.button:hover {
+  text-decoration: underline;
+}

@@ -1,9 +1,8 @@
 #!/usr/bin/env node
-/* global require, console */
 const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
 const config = require('../webpack.config');
-const port = 1234;
+const port = 2345;
 const host = 'localhost';
 
 const serverConfig = {

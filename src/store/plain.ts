@@ -72,17 +72,19 @@ export function selectStem(stemIndex: number) {
   };
 }
 
-export function learnStem(stem: string) {
+export function learnStem(stem: string, languageCode: string) {
   return {
     type: 'learn-stem' as const,
     stem,
+    languageCode,
   };
 }
 
-export function ignoreStem(stem: string) {
+export function ignoreStem(stem: string, languageCode: string) {
   return {
     type: 'ignore-stem' as const,
     stem,
+    languageCode,
   };
 }
 

@@ -36,6 +36,22 @@ export function getLearnedStems(state: State) {
   return state.learnedStems;
 }
 
+export function getUndoList(state: State) {
+  return state.undoList;
+}
+
+export function getLanguage(state: State) {
+  return state.language;
+}
+
+export function getLanguageCode(state: State) {
+  return getLanguage(state).code;
+}
+
+export function getDisplayLanguage(state: State) {
+  return getLanguage(state).code;
+}
+
 export function getSelectedStem(state: State) {
   const stemIndex = getSelectedStemIndex(state);
   const stems = getUnknownStems(state);

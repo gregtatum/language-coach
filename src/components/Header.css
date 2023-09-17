@@ -55,3 +55,32 @@ a.headerLink.active::before {
   height: 4px;
   background-color: var(--accent-color);
 }
+
+.headerLanguageSelect {
+  color: var(--accent-color);
+  font-weight: bold;
+  text-align: center;
+  padding: 6px 9px;
+  font-size: 15px;
+  background-color: #fff;
+  border: 2px solid var(--accent-color);
+  border-radius: 20px;
+  transition: background 0.1s, color 0.1s;
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.headerLanguageSelect:active {
+  outline: 2px solid rgba(var(--accent-color-rgb), 0.5);
+}
+
+.headerLanguageSelect:focus {
+  outline: 2px solid rgba(var(--accent-color-rgb), 0.5);
+}
+
+.headerLanguageSelect:hover {
+  opacity: 1;
+  background-color: rgba(var(--accent-color-rgb), 0.9);
+  color: #fff;
+}

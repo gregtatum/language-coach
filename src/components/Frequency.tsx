@@ -109,10 +109,14 @@ function boldWords(sentence: string, tokens: string[]) {
 export function Frequency() {
   const textAreaRef = React.useRef<HTMLTextAreaElement | null>(null);
   const stemsContainer = React.useRef<HTMLDivElement | null>(null);
-  const [text, setText] = React.useState<string>('');
+
   const dispatch = Hooks.useDispatch();
   const stems = Hooks.useSelector($.getUnknownStems);
   const selectedStem = Hooks.useSelector($.getSelectedStemIndex);
+  const languageCode = Hooks.useSelector($.getLanguageCode);
+
+  const [text, setText] = React.useState<string>('');
+  const [showLearnMore, setShowLearnMore] = React.useState<boolean>(false);
 
   React.useEffect(() => {
     if (text) {
@@ -120,9 +124,10 @@ export function Frequency() {
     }
   }, [text]);
 
-  Hooks.useListener(stemsContainer, 'keypress', [], (event) => {
+  Hooks.useListener(stemsContainer, 'keydown', [], (event) => {
     let stemIndex;
-    switch ((event as KeyboardEvent).key) {
+    const keyboardEvent = event as KeyboardEvent;
+    switch (keyboardEvent.key) {
       case 'j':
       case 'ArrowDown':
         stemIndex = dispatch(A.selectNextStem(1));
@@ -136,6 +141,15 @@ export function Frequency() {
         break;
       case 'l':
         dispatch(A.learnSelectedStem());
+        break;
+      case 'z':
+        console.log(`!!! z`, keyboardEvent);
+        if (
+          (keyboardEvent.ctrlKey || keyboardEvent.metaKey) &&
+          !keyboardEvent.shiftKey
+        ) {
+          dispatch(A.applyUndo());
+        }
         break;
       default:
       // Do nothing.
@@ -157,9 +171,53 @@ export function Frequency() {
     <div className="frequency AppScroll">
       <div className="frequencyTop">
         <p>
-          Paste in text to the textarea to perform a word frequency analysis.
-          This will give you a targeted list of words to learn.
+          Paste text from a book, article, or podcast transcript into the box to
+          find the most used words. This will give you a targeted list of new
+          words to study. Your learned words will be hidden from the list.{' '}
+          {showLearnMore ? null : (
+            <button
+              type="button"
+              className="inline-button"
+              onClick={() => setShowLearnMore(true)}
+            >
+              Learn more…
+            </button>
+          )}
         </p>
+        {showLearnMore ? (
+          <>
+            <p>
+              You can build up your vocab list very quickly by using keyboard
+              shortcuts. Marking a word as learned adds it to your vocab list so
+              that you can see your progress on your language learning journey.
+              Marking a word as ignored hides the word. This is useful for
+              invented words, or proper nouns.
+            </p>
+            <p className="frequencyCodes">
+              <code>k</code>, <code>↑</code> - Move the selected row up.
+              <br />
+              <code>j</code>, <code>↓</code> - Move the selected row down.
+              <br />
+              <code>l</code> - Mark a word as learned.
+              <br />
+              <code>i</code> - Mark a word as ignored.
+              <br />
+              <code>ctrl + z</code> - Undo the action.
+              <br />
+            </p>
+            <p>
+              {showLearnMore ? (
+                <button
+                  type="button"
+                  className="inline-button"
+                  onClick={() => setShowLearnMore(false)}
+                >
+                  Hide learn more.
+                </button>
+              ) : null}
+            </p>
+          </>
+        ) : null}
         <textarea
           className="frequencyTextArea"
           ref={textAreaRef}
@@ -171,10 +229,11 @@ export function Frequency() {
             if (textArea) {
               setText(textArea.value);
             }
+            stemsContainer.current?.focus();
           }}
           className="button frequencyStartButton"
         >
-          Run Analysis
+          Get the Word List
         </button>
       </div>
       <div className="frequencyStems" tabIndex={0} ref={stemsContainer}>
@@ -194,6 +253,7 @@ export function Frequency() {
                 stemIndex={stemIndex}
                 selectedStem={selectedStem}
                 stemsContainer={stemsContainer}
+                languageCode={languageCode}
               />
             ))}
           </>
@@ -208,6 +268,7 @@ interface StemRowProps {
   stemIndex: number;
   selectedStem: number | null;
   stemsContainer: React.RefObject<HTMLDivElement | null>;
+  languageCode: string;
 }
 
 function StemRow({
@@ -215,6 +276,7 @@ function StemRow({
   selectedStem,
   stemIndex,
   stemsContainer,
+  languageCode,
 }: StemRowProps) {
   const dispatch = Hooks.useDispatch();
   const isSelected = selectedStem === stemIndex;
@@ -236,24 +298,24 @@ function StemRow({
     >
       <div className="frequencyStemsCount">{stem.frequency}</div>
       <div>{stem.stem}</div>
-      <div>{stem.tokens.join(',')}</div>
+      <div lang={languageCode}>{stem.tokens.join(',')}</div>
       <div className="frequencyButtons">
         <button
           type="button"
           className="frequencyButton button"
-          onClick={() => dispatch(A.learnStem(stem.stem))}
+          onClick={() => dispatch(A.learnStem(stem.stem, languageCode))}
         >
           learn
         </button>
         <button
           type="button"
           className="frequencyButton button"
-          onClick={() => dispatch(A.ignoreStem(stem.stem))}
+          onClick={() => dispatch(A.ignoreStem(stem.stem, languageCode))}
         >
           ignore
         </button>
       </div>
-      <div>{boldWords(stem.sentences[0], stem.tokens)}</div>
+      <div lang={languageCode}>{boldWords(stem.sentences[0], stem.tokens)}</div>
     </div>
   );
 }

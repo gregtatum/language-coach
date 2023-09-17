@@ -8,7 +8,7 @@ export function HomePage() {
   return (
     <div className="AppFull">
       <div className="homepage">
-        <h1 className="homepageHeader">Translations Coach</h1>
+        <h1 className="homepageHeader">Language Coach</h1>
         <p className="homepageParagraph">
           Translating text is a great way to learn a new language because it
           helps you build your vocabulary and grammar skills. By translating

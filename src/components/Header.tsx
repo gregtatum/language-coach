@@ -1,11 +1,14 @@
 import * as React from 'react';
 import * as Router from 'react-router-dom';
-import { Hooks, $, T } from 'src';
+import { Hooks, $, T, A } from 'src';
 
 import './Header.css';
+import { languages } from 'src/logic/languages';
 
 export function Header() {
   const view = Hooks.useSelector($.getView);
+  const selectedCode = Hooks.useSelector($.getLanguageCode);
+  const dispatch = Hooks.useDispatch();
   function getActiveClass(v: T.View): string {
     if (v === view) {
       return ' active';
@@ -17,7 +20,7 @@ export function Header() {
     <div className="header">
       <img className="headerLogo" src="/logo-96.tiny.png" />
       <div className="headerLogoName">
-        Translation
+        Language
         <br />
         Coach
       </div>
@@ -25,7 +28,7 @@ export function Header() {
         <Router.Link to="/" className={'headerLink' + getActiveClass('home')}>
           Home
         </Router.Link>
-        <Router.Link
+        {/* <Router.Link
           to="/translation"
           className={
             'headerLink' +
@@ -34,13 +37,28 @@ export function Header() {
           }
         >
           Translations
-        </Router.Link>
+        </Router.Link> */}
         <Router.Link
           to="/frequency"
           className={'headerLink' + getActiveClass('frequency')}
         >
-          Word Frequency
+          Most Used Words
         </Router.Link>
+      </div>
+      <div className="headerLanguage">
+        <select
+          className="headerLanguageSelect"
+          value={selectedCode}
+          onChange={(event) => {
+            dispatch(A.changeLanguage(event.target.value));
+          }}
+        >
+          {languages.map(({ code, long }) => (
+            <option key={code} value={code}>
+              {long}
+            </option>
+          ))}
+        </select>
       </div>
     </div>
   );
