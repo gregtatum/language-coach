@@ -1,5 +1,5 @@
 import * as React from 'react';
-import './Frequency.css';
+import './MostUsed.css';
 import { Stem } from 'src/@types';
 import { Hunspell, loadModule } from 'hunspell-asm';
 import { Hooks, $, A } from 'src';
@@ -168,8 +168,8 @@ export function Frequency() {
   });
 
   return (
-    <div className="frequency AppScroll">
-      <div className="frequencyTop">
+    <div className="mostUsed AppScroll">
+      <div className="mostUsedTop">
         <p>
           Paste text from a book, article, or podcast transcript into the box to
           find the most used words. This will give you a targeted list of new
@@ -193,7 +193,7 @@ export function Frequency() {
               Marking a word as ignored hides the word. This is useful for
               invented words, or proper nouns.
             </p>
-            <p className="frequencyCodes">
+            <p className="mostUsedCodes">
               <code>k</code>, <code>↑</code> - Move the selected row up.
               <br />
               <code>j</code>, <code>↓</code> - Move the selected row down.
@@ -204,6 +204,11 @@ export function Frequency() {
               <br />
               <code>ctrl + z</code> - Undo the action.
               <br />
+            </p>
+            <p>
+              Words are grouped by their &ldquo;stems&rdquo;, not the whole
+              word. This way verb endings or plural words are grouped around the
+              same stem.
             </p>
             <p>
               {showLearnMore ? (
@@ -219,7 +224,7 @@ export function Frequency() {
           </>
         ) : null}
         <textarea
-          className="frequencyTextArea"
+          className="mostUsedTextArea"
           ref={textAreaRef}
           defaultValue={sampleText}
         />
@@ -231,16 +236,16 @@ export function Frequency() {
             }
             stemsContainer.current?.focus();
           }}
-          className="button frequencyStartButton"
+          className="button mostUsedStartButton"
         >
           Get the Word List
         </button>
       </div>
-      <div className="frequencyStems" tabIndex={0} ref={stemsContainer}>
+      <div className="mostUsedStems" tabIndex={0} ref={stemsContainer}>
         {stems ? (
           <>
-            <div className="frequencyStemsRow frequencyStemsHeader">
-              <div className="frequencyStemsHeaderRight">Count</div>
+            <div className="mostUsedStemsRow mostUsedStemsHeader">
+              <div className="mostUsedStemsHeaderRight">Count</div>
               <div>Stem</div>
               <div>Words</div>
               <div></div>
@@ -281,7 +286,7 @@ function StemRow({
   const dispatch = Hooks.useDispatch();
   const isSelected = selectedStem === stemIndex;
 
-  let className = 'frequencyStemsRow';
+  let className = 'mostUsedStemsRow';
   if (isSelected) {
     className += ' selected';
   }
@@ -296,20 +301,20 @@ function StemRow({
       aria-selected={isSelected}
       data-stem-index={stemIndex}
     >
-      <div className="frequencyStemsCount">{stem.frequency}</div>
+      <div className="mostUsedStemsCount">{stem.frequency}</div>
       <div>{stem.stem}</div>
       <div lang={languageCode}>{stem.tokens.join(',')}</div>
-      <div className="frequencyButtons">
+      <div className="mostUsedButtons">
         <button
           type="button"
-          className="frequencyButton button"
+          className="mostUsedButton button"
           onClick={() => dispatch(A.learnStem(stem.stem, languageCode))}
         >
           learn
         </button>
         <button
           type="button"
-          className="frequencyButton button"
+          className="mostUsedButton button"
           onClick={() => dispatch(A.ignoreStem(stem.stem, languageCode))}
         >
           ignore

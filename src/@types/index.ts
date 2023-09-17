@@ -70,7 +70,7 @@ export type Store = {
   replaceReducer(nextReducer: Reducer<State>): void;
 };
 
-export type View = 'home' | 'translation-list' | 'translation' | 'frequency';
+export type View = 'home' | 'translation-list' | 'translation' | 'most-used';
 
 export interface SourceSentence {
   text: string;

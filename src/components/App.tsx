@@ -5,7 +5,7 @@ import './App.css';
 import { ApiKey } from './ApiKey';
 import { Translation } from './Translation';
 import { TranslationList } from './TranslationList';
-import { Frequency } from './Frequency';
+import { Frequency } from './MostUsed';
 import { HomePage } from './HomePage';
 import { Header } from './Header';
 
@@ -41,7 +41,7 @@ function FrequencyRouter() {
   const slug = params['*'];
   const dispatch = Hooks.useDispatch();
   React.useEffect(() => {
-    dispatch(A.setView('frequency'));
+    dispatch(A.setView('most-used'));
     // TODO - Handle slug.
   }, [slug]);
   return null;
@@ -61,7 +61,7 @@ export function App() {
           <Router.Route path="translation" element={<TranslationRouter />}>
             <Router.Route path="*" />
           </Router.Route>
-          <Router.Route path="frequency" element={<FrequencyRouter />}>
+          <Router.Route path="most-used" element={<FrequencyRouter />}>
             <Router.Route path="*" />
           </Router.Route>
         </Router.Routes>
@@ -81,7 +81,7 @@ function Views() {
       return <TranslationList />;
     case 'translation':
       return <Translation />;
-    case 'frequency':
+    case 'most-used':
       return <Frequency />;
     default:
       throw new UnhandledCaseError(view, 'Unhandled view');

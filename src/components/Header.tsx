@@ -28,7 +28,7 @@ export function Header() {
         <Router.Link to="/" className={'headerLink' + getActiveClass('home')}>
           Home
         </Router.Link>
-        {/* <Router.Link
+        <Router.Link
           to="/translation"
           className={
             'headerLink' +
@@ -37,10 +37,10 @@ export function Header() {
           }
         >
           Translations
-        </Router.Link> */}
+        </Router.Link>
         <Router.Link
-          to="/frequency"
-          className={'headerLink' + getActiveClass('frequency')}
+          to="/most-used"
+          className={'headerLink' + getActiveClass('most-used')}
         >
           Most Used Words
         </Router.Link>
