@@ -1,3 +1,3 @@
-# Translation Coach
+# Language Coach
 
-A ChatGPT app to help with your translations. This is a WIP.
+A set of tools for learning languages.
