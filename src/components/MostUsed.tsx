@@ -263,7 +263,10 @@ export function MostUsed() {
           onClick={() => {
             const textArea = textAreaRef.current;
             if (textArea) {
-              setText(textArea.value);
+              // Normalize the text as hunspell doesn't seem to handle decomposed unicode
+              // graphemes. Use decomposition -> composition to ensure a consistent
+              // stemming.
+              setText(textArea.value.normalize('NFC'));
             }
             stemsContainer.current?.focus();
           }}

@@ -19,7 +19,7 @@ export function Header() {
 
   return (
     <div className="header">
-      <img className="headerLogo" src="/logo-96.tiny.png" />
+      <img className="headerLogo" src="logo-96.tiny.png" />
       <div className="headerLogoName">
         Language
         <br />
