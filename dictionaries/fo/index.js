@@ -1,0 +1,1 @@
+const read=require("fs").readFile,join=require("path").join;function load(n){let e=-1,l=null,i={};function o(o){read(join(__dirname,"index."+o),((d,r)=>{e++,l=l||d,i[o]=r,e&&(n(l,l?null:i),l=null,i=null)}))}o("aff"),o("dic")}module.exports=load;
