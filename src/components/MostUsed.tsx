@@ -5,23 +5,6 @@ import { Hunspell, loadModule } from 'hunspell-asm';
 import { Hooks, $, A } from 'src';
 import { isElementInViewport } from 'src/utils';
 
-let hunspell: Hunspell | void;
-
-// eslint-disable-next-line @typescript-eslint/no-floating-promises
-(async () => {
-  const affResponse = await fetch('dictionaries/es/index.aff');
-  const dicResponse = await fetch('dictionaries/es/index.dic');
-  const affBuffer = new Uint8Array(await affResponse.arrayBuffer());
-  const dicBuffer = new Uint8Array(await dicResponse.arrayBuffer());
-
-  const hunspellFactory = await loadModule();
-
-  const affFile = hunspellFactory.mountBuffer(affBuffer, 'es.aff');
-  const dictFile = hunspellFactory.mountBuffer(dicBuffer, 'es.dic');
-
-  hunspell = hunspellFactory.create(affFile, dictFile);
-})();
-
 function segmentSentence(text: string, locale = 'es'): string[] {
   if (Intl.Segmenter) {
     const sentences = [];
@@ -56,19 +39,19 @@ function segmentWords(text: string, locale = 'es'): string[] {
   return words;
 }
 
-const sampleText = [
-  'Que trata de la condición y ejercicio del famoso hidalgo don Quijote de',
-  'la Mancha Que trata de la primera salida que de su tierra hizo el',
-  'ingenioso don Quijote Donde se cuenta la graciosa manera que tuvo don',
-  'Quijote en armarse caballero',
-];
+// const sampleText = [
+//   'Que trata de la condición y ejercicio del famoso hidalgo don Quijote de',
+//   'la Mancha Que trata de la primera salida que de su tierra hizo el',
+//   'ingenioso don Quijote Donde se cuenta la graciosa manera que tuvo don',
+//   'Quijote en armarse caballero',
+// ];
 
-function computeStems(text: string, locale = 'es'): Stem[] {
+function computeStems(hunspell: Hunspell, text: string, locale = 'es'): Stem[] {
   const stemsByStem: Map<string, Stem> = new Map();
   for (const sentence of segmentSentence(text, locale)) {
     for (const word of segmentWords(sentence, locale)) {
       const stemmedWord = hunspell?.stem(word)[0] ?? word;
-      let stem = stemsByStem.get(word);
+      let stem = stemsByStem.get(stemmedWord);
       if (!stem) {
         stem = {
           stem: stemmedWord,
@@ -76,7 +59,7 @@ function computeStems(text: string, locale = 'es'): Stem[] {
           tokens: [],
           sentences: [],
         };
-        stemsByStem.set(word, stem);
+        stemsByStem.set(stemmedWord, stem);
       }
       if (!stem.tokens.includes(word)) {
         stem.tokens.push(word);
@@ -106,7 +89,7 @@ function boldWords(sentence: string, tokens: string[]) {
   return results;
 }
 
-export function Frequency() {
+export function MostUsed() {
   const textAreaRef = React.useRef<HTMLTextAreaElement | null>(null);
   const stemsContainer = React.useRef<HTMLDivElement | null>(null);
 
@@ -114,19 +97,58 @@ export function Frequency() {
   const stems = Hooks.useSelector($.getUnknownStems);
   const selectedStem = Hooks.useSelector($.getSelectedStemIndex);
   const languageCode = Hooks.useSelector($.getLanguageCode);
+  const selectedSentences = Hooks.useSelector($.getSelectedSentences);
 
   const [text, setText] = React.useState<string>('');
+  const [hunspell, setHunspell] = React.useState<Hunspell | undefined>();
   const [showLearnMore, setShowLearnMore] = React.useState<boolean>(false);
 
   React.useEffect(() => {
-    if (text) {
-      dispatch(A.stemFrequencyAnalysis(computeStems(text)));
+    // TODO - Implement proper async behavior here and error handling.
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    (async () => {
+      const affResponse = await fetch(`dictionaries/${languageCode}/index.aff`);
+      const dicResponse = await fetch(`dictionaries/${languageCode}/index.dic`);
+      const affBuffer = new Uint8Array(await affResponse.arrayBuffer());
+      const dicBuffer = new Uint8Array(await dicResponse.arrayBuffer());
+
+      const hunspellFactory = await loadModule();
+
+      const affFile = hunspellFactory.mountBuffer(
+        affBuffer,
+        `${languageCode}.aff`,
+      );
+      const dictFile = hunspellFactory.mountBuffer(
+        dicBuffer,
+        `${languageCode}.dic`,
+      );
+
+      console.log(`Hunspell loaded for "${languageCode}".`);
+      setHunspell(hunspellFactory.create(affFile, dictFile));
+    })().catch((error) => console.error(error));
+  }, [languageCode]);
+
+  React.useEffect(() => {
+    if (text && hunspell) {
+      dispatch(A.stemFrequencyAnalysis(computeStems(hunspell, text)));
     }
-  }, [text]);
+  }, [text, hunspell]);
 
   Hooks.useListener(stemsContainer, 'keydown', [], (event) => {
     let stemIndex;
     const keyboardEvent = event as KeyboardEvent;
+
+    switch (keyboardEvent.key) {
+      case 'ArrowDown':
+      case 'ArrowUp':
+      case 'ArrowLeft':
+      case 'ArrowRight':
+        // Prevent scrolling.
+        event.preventDefault();
+        break;
+      default:
+    }
+
     switch (keyboardEvent.key) {
       case 'j':
       case 'ArrowDown':
@@ -142,8 +164,13 @@ export function Frequency() {
       case 'l':
         dispatch(A.learnSelectedStem());
         break;
+      case 'ArrowLeft':
+        dispatch(A.nextSentence(-1));
+        break;
+      case 'ArrowRight':
+        dispatch(A.nextSentence(1));
+        break;
       case 'z':
-        console.log(`!!! z`, keyboardEvent);
         if (
           (keyboardEvent.ctrlKey || keyboardEvent.metaKey) &&
           !keyboardEvent.shiftKey
@@ -186,6 +213,7 @@ export function Frequency() {
         </p>
         {showLearnMore ? (
           <>
+            <h2>Keyboard Shortcuts</h2>
             <p>
               You can build up your vocab list very quickly by using keyboard
               shortcuts. Marking a word as learned adds it to your vocab list so
@@ -204,11 +232,14 @@ export function Frequency() {
               <br />
               <code>ctrl + z</code> - Undo the action.
               <br />
+              <code>←</code>, <code>→</code> - Change the selected sentence
+              <br />
             </p>
+            <h2>Word Roots</h2>
             <p>
-              Words are grouped by their &ldquo;stems&rdquo;, not the whole
-              word. This way verb endings or plural words are grouped around the
-              same stem.
+              Words are grouped by their word roots, which may remove part of
+              the word, such as the verb ending or the pluralization. This way
+              variations of words are grouped around the same root.
             </p>
             <p>
               {showLearnMore ? (
@@ -226,7 +257,7 @@ export function Frequency() {
         <textarea
           className="mostUsedTextArea"
           ref={textAreaRef}
-          defaultValue={sampleText}
+          placeholder="Paste your text here…"
         />
         <button
           onClick={() => {
@@ -246,10 +277,10 @@ export function Frequency() {
           <>
             <div className="mostUsedStemsRow mostUsedStemsHeader">
               <div className="mostUsedStemsHeaderRight">Count</div>
-              <div>Stem</div>
-              <div>Words</div>
+              <div>Word Root</div>
+              <div>Word Uses</div>
               <div></div>
-              <div>Sentence</div>
+              <div>Sentences</div>
             </div>
             {stems.map((stem, stemIndex) => (
               <StemRow
@@ -259,6 +290,7 @@ export function Frequency() {
                 selectedStem={selectedStem}
                 stemsContainer={stemsContainer}
                 languageCode={languageCode}
+                selectedSentence={selectedSentences.get(stem.stem) ?? 0}
               />
             ))}
           </>
@@ -274,6 +306,7 @@ interface StemRowProps {
   selectedStem: number | null;
   stemsContainer: React.RefObject<HTMLDivElement | null>;
   languageCode: string;
+  selectedSentence: number;
 }
 
 function StemRow({
@@ -282,6 +315,7 @@ function StemRow({
   stemIndex,
   stemsContainer,
   languageCode,
+  selectedSentence,
 }: StemRowProps) {
   const dispatch = Hooks.useDispatch();
   const isSelected = selectedStem === stemIndex;
@@ -303,7 +337,7 @@ function StemRow({
     >
       <div className="mostUsedStemsCount">{stem.frequency}</div>
       <div>{stem.stem}</div>
-      <div lang={languageCode}>{stem.tokens.join(',')}</div>
+      <div lang={languageCode}>{stem.tokens.join(', ')}</div>
       <div className="mostUsedButtons">
         <button
           type="button"
@@ -320,7 +354,9 @@ function StemRow({
           ignore
         </button>
       </div>
-      <div lang={languageCode}>{boldWords(stem.sentences[0], stem.tokens)}</div>
+      <div lang={languageCode}>
+        {boldWords(stem.sentences[selectedSentence], stem.tokens)}
+      </div>
     </div>
   );
 }

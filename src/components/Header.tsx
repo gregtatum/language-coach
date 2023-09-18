@@ -8,6 +8,7 @@ import { languages } from 'src/logic/languages';
 export function Header() {
   const view = Hooks.useSelector($.getView);
   const selectedCode = Hooks.useSelector($.getLanguageCode);
+  const learnedWords = Hooks.useSelector($.getLearnedStems);
   const dispatch = Hooks.useDispatch();
   function getActiveClass(v: T.View): string {
     if (v === view) {
@@ -28,7 +29,7 @@ export function Header() {
         <Router.Link to="/" className={'headerLink' + getActiveClass('home')}>
           Home
         </Router.Link>
-        <Router.Link
+        {/* <Router.Link
           to="/translation"
           className={
             'headerLink' +
@@ -37,12 +38,19 @@ export function Header() {
           }
         >
           Translations
-        </Router.Link>
+        </Router.Link> */}
         <Router.Link
           to="/most-used"
           className={'headerLink' + getActiveClass('most-used')}
         >
           Most Used Words
+        </Router.Link>
+        <Router.Link
+          to="/learned"
+          className={'headerLink' + getActiveClass('learned')}
+        >
+          Learned Words{' '}
+          <span className="headerBubble">{learnedWords.size}</span>
         </Router.Link>
       </div>
       <div className="headerLanguage">

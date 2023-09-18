@@ -1,6 +1,7 @@
 import { Thunk } from 'src/@types';
 import * as Plain from './plain';
 import { $, T, Utils } from 'src';
+import { ensureExists } from 'src/utils';
 
 /**
  * This file contains all of the thunk actions, that contain extra logic,
@@ -22,6 +23,13 @@ const PlainInternal = {
   },
   undoIgnoreStem(stem: string, languageCode: string) {
     return { type: 'undo-ignore-stem' as const, stem, languageCode };
+  },
+  nextSentence(stem: T.Stem, direction: -1 | 1) {
+    return {
+      type: 'next-sentence' as const,
+      direction,
+      stem,
+    };
   },
 };
 
@@ -103,7 +111,6 @@ export function applyUndo(): Thunk {
     const undoList = $.getUndoList(getState());
     const action = undoList[undoList.length - 1];
     if (!action) {
-      console.log(`!!! Nothing to undo`);
       return;
     }
     switch (action.type) {
@@ -118,5 +125,16 @@ export function applyUndo(): Thunk {
       default:
         throw new Error('Unknown undo action: ' + action.type);
     }
+  };
+}
+
+export function nextSentence(direction: -1 | 1, stemIndex?: number): Thunk {
+  return (dispatch, getState) => {
+    if (stemIndex === undefined) {
+      stemIndex = ensureExists($.getSelectedStemIndex(getState()));
+    }
+    const stem = ensureExists($.getUnknownStems(getState()))[stemIndex];
+
+    dispatch(PlainInternal.nextSentence(stem, direction));
   };
 }

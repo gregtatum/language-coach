@@ -142,16 +142,18 @@ function selectedStem(
   }
 }
 
-function getLearnedStemsFromLocalStorage(): Set<string> {
-  const language = localStorage.getItem('language');
+function getLearnedStemsFromLocalStorage(
+  language = localStorage.getItem('language'),
+): Set<string> {
   if (!language) {
     return new Set();
   }
   return getSetFromLocalStorage('learned-stems-' + language);
 }
 
-function getIgnoredStemsFromLocalStorage(): Set<string> {
-  const language = localStorage.getItem('language');
+function getIgnoredStemsFromLocalStorage(
+  language = localStorage.getItem('language'),
+): Set<string> {
   if (!language) {
     return new Set();
   }
@@ -189,6 +191,8 @@ function ignoredStems(
       saveSetToLocalStorage('ignored-stems-' + languageCode, stems);
       return stems;
     }
+    case 'change-language':
+      return getIgnoredStemsFromLocalStorage(action.code);
     default:
       return state;
   }
@@ -213,6 +217,13 @@ function learnedStems(
       saveSetToLocalStorage('learned-stems-' + languageCode, stems);
       return stems;
     }
+    case 'update-learned-words': {
+      const { words, languageCode } = action;
+      saveSetToLocalStorage('learned-stems-' + languageCode, words);
+      return words;
+    }
+    case 'change-language':
+      return getLearnedStemsFromLocalStorage(action.code);
     default:
       return state;
   }
@@ -253,6 +264,28 @@ function undoList(state: T.Action[] = [], action: T.Action): T.Action[] {
   }
 }
 
+function selectedSentences(
+  state: Map<string, number> = new Map(),
+  action: T.Action,
+): Map<string, number> {
+  switch (action.type) {
+    case 'stem-frequency-analysis':
+      return new Map();
+    case 'next-sentence': {
+      const { stem, direction } = action;
+      const currentIndex = state.get(stem.stem) ?? 0;
+      const sentencesLength = stem.sentences.length;
+      const newState = new Map(state);
+      const nextIndex =
+        (sentencesLength + currentIndex + direction) % sentencesLength;
+      newState.set(stem.stem, nextIndex);
+      return newState;
+    }
+    default:
+      return state;
+  }
+}
+
 export const reducers = combineReducers({
   init,
   openAiApiKey,
@@ -265,6 +298,7 @@ export const reducers = combineReducers({
   learnedStems,
   undoList,
   language,
+  selectedSentences,
 });
 
 export type State = ReturnType<typeof reducers>;

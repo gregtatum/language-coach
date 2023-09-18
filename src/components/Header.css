@@ -84,3 +84,12 @@ a.headerLink.active::before {
   background-color: rgba(var(--accent-color-rgb), 0.9);
   color: #fff;
 }
+
+.headerBubble {
+  background-color: var(--accent-color);
+  border-radius: 12px;
+  margin-inline-start: 5px;
+  color: #fff;
+  padding: 5px;
+  font-size: 12px;
+}

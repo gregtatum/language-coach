@@ -5,7 +5,8 @@ import './App.css';
 import { ApiKey } from './ApiKey';
 import { Translation } from './Translation';
 import { TranslationList } from './TranslationList';
-import { Frequency } from './MostUsed';
+import { MostUsed } from './MostUsed';
+import { Learned } from './Learned';
 import { HomePage } from './HomePage';
 import { Header } from './Header';
 
@@ -36,12 +37,23 @@ function TranslationRouter() {
   return null;
 }
 
-function FrequencyRouter() {
+function MostUsedRouter() {
   const params = Router.useParams();
   const slug = params['*'];
   const dispatch = Hooks.useDispatch();
   React.useEffect(() => {
     dispatch(A.setView('most-used'));
+    // TODO - Handle slug.
+  }, [slug]);
+  return null;
+}
+
+function LearnedRouter() {
+  const params = Router.useParams();
+  const slug = params['*'];
+  const dispatch = Hooks.useDispatch();
+  React.useEffect(() => {
+    dispatch(A.setView('learned'));
     // TODO - Handle slug.
   }, [slug]);
   return null;
@@ -61,7 +73,10 @@ export function App() {
           <Router.Route path="translation" element={<TranslationRouter />}>
             <Router.Route path="*" />
           </Router.Route>
-          <Router.Route path="most-used" element={<FrequencyRouter />}>
+          <Router.Route path="most-used" element={<MostUsedRouter />}>
+            <Router.Route path="*" />
+          </Router.Route>
+          <Router.Route path="learned" element={<LearnedRouter />}>
             <Router.Route path="*" />
           </Router.Route>
         </Router.Routes>
@@ -82,7 +97,9 @@ function Views() {
     case 'translation':
       return <Translation />;
     case 'most-used':
-      return <Frequency />;
+      return <MostUsed />;
+    case 'learned':
+      return <Learned />;
     default:
       throw new UnhandledCaseError(view, 'Unhandled view');
   }

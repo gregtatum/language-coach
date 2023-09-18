@@ -59,7 +59,6 @@ export function OldTranslation() {
   }
 
   const needsLanguages = !sourceLanguage || !targetLanguage;
-  console.log(`!!! needsLanguages`, needsLanguages);
   return (
     <div className="oldTranslation">
       {needsLanguages ? <h2>Choose Translation Languages</h2> : null}

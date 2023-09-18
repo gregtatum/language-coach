@@ -10,15 +10,16 @@ export function HomePage() {
       <div className="homepage">
         <h1 className="homepageHeader">Language Coach</h1>
         <p className="homepageParagraph">
-          Translating text is a great way to learn a new language because it
-          helps you build your vocabulary and grammar skills. By translating
-          text, you get exposure to different sentence structures, idiomatic
-          expressions, and cultural nuances, which can improve your
-          comprehension and communication abilities.
+          Use the Language Coach tools to help learn another language. Right now
+          you can generate a study list with the &ldquo;Most Used Words&rdquo;
+          tool. More tools are coming soon, like a translation coach.
+          <br />
+          <br />
+          Select your language at top right.
         </p>
         <div className="homepageButtons">
-          <Router.Link to="/translation" className="homepageButton">
-            Start Translating
+          <Router.Link to="/most-used" className="homepageButton">
+            Get Started
           </Router.Link>
         </div>
       </div>

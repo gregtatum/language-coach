@@ -94,3 +94,11 @@ export function changeLanguage(code: string) {
     code,
   };
 }
+
+export function updateLearnedWords(words: Set<string>, languageCode: string) {
+  return {
+    type: 'update-learned-words' as const,
+    words,
+    languageCode,
+  };
+}

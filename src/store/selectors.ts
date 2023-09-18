@@ -48,6 +48,10 @@ export function getLanguageCode(state: State) {
   return getLanguage(state).code;
 }
 
+export function getSelectedSentences(state: State) {
+  return state.selectedSentences;
+}
+
 export function getDisplayLanguage(state: State) {
   return getLanguage(state).code;
 }
@@ -177,5 +181,15 @@ export const guessTranslationLanguages = createSelector(
     }
 
     return { sourceLanguage: sourceGuess, targetLanguage: targetGuess };
+  },
+);
+
+export const getSortedLearnedStems = createSelector(
+  getLearnedStems,
+  getLanguageCode,
+  (stemsSet, languageCode): string[] => {
+    const stems = [...stemsSet];
+    stems.sort((a, b) => a.localeCompare(b, languageCode));
+    return stems;
   },
 );

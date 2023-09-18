@@ -1,11 +1,13 @@
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore } from 'src/store/create-store';
 import * as T from 'src/@types';
 import { App } from 'src/components/App';
 import { mockGoogleAnalytics } from 'src/utils';
 import { createRoot } from 'react-dom/client';
+
+import * as selectors from 'src/store/selectors';
+import * as actions from 'src/store/actions';
 
 export * as A from 'src/store/actions';
 export * as $ from 'src/store/selectors';
@@ -21,7 +23,13 @@ export function init() {
   mockGoogleAnalytics();
 
   const store = createStore();
-  Object.assign(window as any, { store });
+  Object.assign(window as any, {
+    selectors,
+    actions,
+    store,
+    getState: store.getState,
+    dispatch: store.dispatch,
+  });
   mountReact(store);
 }
 

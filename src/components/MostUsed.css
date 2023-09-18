@@ -1,7 +1,7 @@
 .mostUsedTop {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: start;
   max-width: 700px;
   padding: 0 10px;
   margin: 0 auto;
@@ -9,7 +9,6 @@
 
 .mostUsedTop p {
   line-height: 1.4;
-  align-self: start;
 }
 
 .mostUsedTop code {
@@ -55,6 +54,10 @@
   border-radius: 3px;
   background-color: var(--accent-color);
   color: #fff;
+}
+
+.mostUsedStartButton {
+  align-self: center;
 }
 
 .mostUsedStemsCount {
